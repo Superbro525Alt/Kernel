@@ -11,8 +11,12 @@ GRUB_PATH := $(BOOT_PATH)/grub
 KERNEL_BIN := build/kernel
 
 .PHONY: all
-all: bootloader kernel linker iso create-vm clean
+all: make-folders bootloader kernel linker iso create-vm clean
 	@echo Make has completed.
+
+make-folders:
+	${MKDIR} build
+	${MKDIR} sim
 
 bootloader: boot.asm
 	nasm -f elf32 boot.asm -o build/boot.o
@@ -41,3 +45,7 @@ create-vm: build/completed/OS.iso
 clean:
 	$(RM) *.o $(BIN) *iso
 	$(RM) ./iso
+	${RM} ./build/*.o
+	${RM} build/*.o
+	${RM} **/*.o
+	${RM} ./sim
